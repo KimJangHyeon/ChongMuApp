@@ -40,7 +40,7 @@ public class SQLiteGroup extends SQLiteOpenHelper{
 
         //group & member table
         db.execSQL("CREATE TABLE if not exists " + Constant.GM_JOIN_TABLE
-                + " (gid INTEGER NOT NULL, mid INTEGER NOT NULL, PRIMARY KEY (gid, mid), " +
+                + " (gid INTEGER NOT NULL, mid INTEGER NOT NULL, " +
                 "FOREIGN KEY (gid) REFERENCES " + Constant.GROUP_TABLE
                 +" (gid), "+
                 "FOREIGN KEY (mid) REFERENCES " + Constant.MEMBER_TABLE
@@ -49,7 +49,7 @@ public class SQLiteGroup extends SQLiteOpenHelper{
 
         //payables table
         db.execSQL("CREATE TABLE if not exists " + Constant.PAY_TABLE
-                + " (gid INTEGER, eid INTEGER, mid INTEGER PRIMARY KEY, pay INTEGER, payables BOOLEAN, "
+                + " (gid INTEGER, eid INTEGER, mid INTEGER, pay INTEGER, payables BOOLEAN, "
                 + "FOREIGN KEY (mid) REFERENCES " + Constant.MEMBER_TABLE + " (mid)) "
         );
     }

@@ -19,6 +19,7 @@ import com.example.owner.chongmuapp.Model.Info.MemberInfo;
 import com.example.owner.chongmuapp.Presenter.GroupPresenter;
 import com.example.owner.chongmuapp.Presenter.MemberPresenter;
 import com.example.owner.chongmuapp.R;
+import com.example.owner.chongmuapp.Views.Activity.AddGroupActivity;
 import com.example.owner.chongmuapp.Views.Activity.EventActivity;
 import com.example.owner.chongmuapp.Views.Adapter.GroupAdapter;
 import com.example.owner.chongmuapp.Views.Adapter.MemberAdapter;
@@ -64,8 +65,9 @@ public class MemberFragment extends Fragment implements MemberPresenter.View{
         adapter.setItemClick(new MemberAdapter.ItemClick(){
             @Override
             public void onClick(MemberInfo memberInfo, int position) {
-                Intent intent = new Intent(getActivity(), EventActivity.class);
+                Intent intent = new Intent(getActivity(), AddGroupActivity.class);
                 intent.putExtra("mid", memberInfo.getId());
+                intent.putExtra("mName", memberInfo.getName());
                 Toast.makeText(getActivity(), "mid: "+memberInfo.getId(),
                         Toast.LENGTH_LONG).show();
 

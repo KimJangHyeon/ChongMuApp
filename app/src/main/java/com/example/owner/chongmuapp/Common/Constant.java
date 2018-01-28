@@ -11,8 +11,8 @@ public class Constant {
 
 
     //DB name
-    public static final String DB_NAME = "TEST.db";
-    public static final String GM_JOIN_TABLE = "GMJOIN";
+    public static final String DB_NAME = "TEST2.db";
+    public static final String GM_JOIN_TABLE = "TGMJOIN";
     public static final String GROUP_TABLE = "TGROUP";
     public static final String MEMBER_TABLE = "TMEMBER";
     public static final String EVENT_TABLE = "TEVENT";

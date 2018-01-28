@@ -179,6 +179,7 @@ public class StartActivity extends AppCompatActivity implements DataPresenter.Vi
                 }
                 else {
                     int mid = memberFragment.addInfo(memberDialog1.getEdit1Str());
+                    Log.e("midmid", mid+"");
                     Intent intent = new Intent(StartActivity.this, AddGroupActivity.class);
                     intent.putExtra("mid", mid);
                     intent.putExtra("mName", memberDialog1.getEdit1Str());

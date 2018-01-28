@@ -16,10 +16,6 @@ import java.util.ArrayList;
  */
 
 public class SQLiteGM extends SQLiteOpenHelper {
-    private String Table = "GMjoin";
-    private final String gTable = "group";
-    private final String mTable = "member";
-
     public SQLiteGM (Context context, String db_name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, db_name, factory, version);
     }
@@ -66,18 +62,18 @@ public class SQLiteGM extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("gid", gid);
         values.put("mid", mid);
-
-        this.getWritableDatabase().insert(Table, null, values);
+        this.getWritableDatabase().insert(Constant.GM_JOIN_TABLE, null, values);
     }
 
     public void delete (int mid, int gid) {
+        Log.e("DB DELETE", "mid: "+mid + "gid: "+gid);
         String[] idArgs = {String.valueOf(mid), String.valueOf(gid)};
-        this.getWritableDatabase().delete(Table, "mid = ? AND gid = ?", idArgs);
+        this.getWritableDatabase().delete(Constant.GM_JOIN_TABLE, "mid = ? AND gid = ?", idArgs);
     }
 
     public void getMatchingGroup(int mid, ArrayList<String> matchingGid) {
         try{
-            Cursor cursor = this.getReadableDatabase().rawQuery("SELECT gid FROM " + Constant.GROUP_TABLE +" WHERE mid ="+mid, null);
+            Cursor cursor = this.getReadableDatabase().rawQuery("SELECT gid FROM " + Constant.GM_JOIN_TABLE +" WHERE mid ="+mid, null);
             if(cursor.moveToFirst()) {
                 do {
                     matchingGid.add(String.valueOf(cursor.getInt(0)));
@@ -87,6 +83,7 @@ public class SQLiteGM extends SQLiteOpenHelper {
             return;
         }catch(Exception e){
             Log.e("GM return ", "false");
+            Log.e("GM Error", e+"");
             return;
         }
     }
