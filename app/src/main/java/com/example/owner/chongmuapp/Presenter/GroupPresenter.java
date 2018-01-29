@@ -40,25 +40,22 @@ public class GroupPresenter {
     public GroupPresenter(View view) {
         this.view = view;
         groupHandler = new GroupHandler().getInstance();
-
         setReyclerView();
 
         if (groupHandler.isInitialized() == false) {
-            Log.e("on creat", "work2");
             getGroupInfo();
         }
     }
     public GroupPresenter() {}
 
-    private void setReyclerView(){
+    public void setAddReyclerView(){
         adapter = new GroupAdapter(groupHandler.getInstance().getInfoList());
         groupHandler.getInstance().attach(adapter);
     }
 
-    public static GroupPresenter getInstance(){
-        if(groupPresenter == null)
-            groupPresenter = new GroupPresenter();
-        return groupPresenter;
+    private void setReyclerView(){
+        adapter = new GroupAdapter(groupHandler.getInstance().getInfoList());
+        groupHandler.getInstance().attach(adapter);
     }
 
     /* ListView Method */
@@ -87,7 +84,7 @@ public class GroupPresenter {
         GroupInfo groupInfo;
         SQLiteGroup DB = new SQLiteGroup(context, Constant.DB_NAME, null, 4);
         DB.insert(groupName);
-        Log.e("DB.getInfo", DB.getInfo(groupName)+"");
+
         groupInfo = DB.getInfo(groupName);
         groupHandler.getInstance().addInfo(groupInfo);
         DB.close();
@@ -107,6 +104,7 @@ public class GroupPresenter {
             groupHandler.getInstance().getInfoList().get(i).setPin(0);
             groupList.add(new GroupItem(groupHandler.getInstance().getInfoList().get(i).getId(), 0));
         }
+
         for(String gidStr: gidList) {
             for (int i = 0; i < groupHandler.getInstance().getInfoList().size(); i++) {
                 if(groupHandler.getInstance().getInfoList().get(i).getId() == Integer.parseInt(gidStr)) {
@@ -120,5 +118,15 @@ public class GroupPresenter {
     public boolean addGroupIsChecked(int pos, int isCheck){
         groupHandler.getInstance().isChecked(pos, isCheck);
         return true;
+    }
+    public void flashList(){
+        groupHandler.getInstance().flashGroupInfoList();
+    }
+    public void loadList(){
+        groupHandler.getInstance().loadGroupInfoList();
+    }
+
+    public void debugLogSave(){
+        groupHandler.debugLogSaver();
     }
 }

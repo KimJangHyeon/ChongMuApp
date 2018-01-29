@@ -1,5 +1,7 @@
 package com.example.owner.chongmuapp.Presenter.InfoHandler;
 
+import android.util.Log;
+
 import com.example.owner.chongmuapp.Model.Info.GroupInfo;
 import com.example.owner.chongmuapp.Presenter.Subject;
 
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 public class GroupHandler extends Subject{
     private static GroupHandler groupHandler = null;
     private ArrayList<GroupInfo> groupInfoList = new ArrayList<>();
+    private ArrayList<GroupInfo> saverGroupInfoList = new ArrayList<>();
 
     private boolean initialized = false;
 
@@ -30,7 +33,9 @@ public class GroupHandler extends Subject{
         return groupHandler;
     }
 
-    public void refresh() { groupInfoList.clear(); }
+    public void refresh() {
+        groupInfoList.clear();
+    }
 
     public void addInfo(GroupInfo groupInfo){
         groupInfoList.add(groupInfo);
@@ -44,6 +49,7 @@ public class GroupHandler extends Subject{
 
     public boolean isChecked(int pos, int isChecked){
         groupInfoList.get(pos).setPin(isChecked);
+        Log.e("GH isChecked gil pin", groupInfoList.get(pos).getPin()+"");
         notifyObservers();
         return true;
     }
@@ -51,4 +57,24 @@ public class GroupHandler extends Subject{
     public ArrayList<GroupInfo> getInfoList() {
         return this.groupInfoList;
     }
+
+
+    public void flashGroupInfoList(){
+        saverGroupInfoList.clear();
+        // saverGroupInfoList.addAll(groupInfoList);
+        for(GroupInfo g: groupInfoList)
+            saverGroupInfoList.add(new GroupInfo(g.getId(), g.getName(), g.getPin()));
+    }
+    public void loadGroupInfoList(){
+        groupInfoList.clear();
+        groupInfoList.addAll(saverGroupInfoList);
+
+        notifyObservers();
+    }
+    public void debugLogSaver(){
+        for(GroupInfo g: saverGroupInfoList){
+            Log.e("saverGroupInfoList", "pin: " + g.getPin());
+        }
+    }
+
 }

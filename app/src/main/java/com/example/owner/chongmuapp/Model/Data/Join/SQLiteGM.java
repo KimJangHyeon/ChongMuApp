@@ -66,9 +66,14 @@ public class SQLiteGM extends SQLiteOpenHelper {
     }
 
     public void delete (int mid, int gid) {
-        Log.e("DB DELETE", "mid: "+mid + "gid: "+gid);
         String[] idArgs = {String.valueOf(mid), String.valueOf(gid)};
         this.getWritableDatabase().delete(Constant.GM_JOIN_TABLE, "mid = ? AND gid = ?", idArgs);
+    }
+    public void deleteByGid(int gid){
+        this.getWritableDatabase().delete(Constant.GM_JOIN_TABLE, "gid = ?", new String[]{String.valueOf(gid)});
+    }
+    public void deleteByMid(int mid){
+        this.getWritableDatabase().delete(Constant.GM_JOIN_TABLE, "mid = ?", new String[]{String.valueOf(mid)});
     }
 
     public void getMatchingGroup(int mid, ArrayList<String> matchingGid) {

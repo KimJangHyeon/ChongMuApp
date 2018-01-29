@@ -48,18 +48,28 @@ public class AddGroupActivity extends AppCompatActivity implements GroupPresente
         recyclerView = (RecyclerView)findViewById(R.id.recy_group);
         gmJoinPresenter = new GMJoinPresenter();
         groupPresenter = new GroupPresenter(this);
+
         groupPresenter.setContext(getApplicationContext());
         gmJoinPresenter.setContext(getApplicationContext());
+
         gidList = new ArrayList<>();
+        groupPresenter.flashList();
         groupPresenter.showAll();
+
         textApply = (TextView) findViewById(R.id.btn_apply_txt);
         textApply.setOnClickListener(this);
         Intent intent = getIntent();
         mid = intent.getExtras().getInt("mid");
         mName = intent.getExtras().getString("mName");
-
-
     }
+
+    @Override
+    public void onBackPressed() {
+        groupPresenter.loadList();
+
+        super.onBackPressed();
+    }
+
     /* View Interface */
     @Override
     public void showAdapter(GroupAdapter adapter) {
@@ -67,21 +77,21 @@ public class AddGroupActivity extends AppCompatActivity implements GroupPresente
         Intent intent = getIntent();
         mid = intent.getExtras().getInt("mid");
         mName = intent.getExtras().getString("mName");
-
+        Log.e("1", "1");
+        groupPresenter.debugLogSave();
         groupPresenter.setAddMode(gmJoinPresenter.getMatchingGid(mid), oldItemList);
+        Log.e("2", "2");
+        groupPresenter.debugLogSave();
         adapter.setItemClick(new GroupAdapter.ItemClick(){
             @Override
             public void onClick(GroupInfo groupInfo, int position) {
                 if(groupInfo.getPin() == 1){
-                    Log.e("현재 핀 ", "1->0");
                     groupPresenter.addGroupIsChecked(position, 0);
                     groupInfo.setPin(0);
                     gidList.remove(String.valueOf(groupInfo.getId()));
                     Log.e("gidList  ", gidList.toString());
                 }
                 else if (groupInfo.getPin() == 0) {
-
-                    Log.e("현재 핀 ", "0->1");
                     groupPresenter.addGroupIsChecked(position, 1);
                     gidList.add(String.valueOf(groupInfo.getId()));
                     Log.e("gidList  ", gidList.toString());
@@ -103,8 +113,10 @@ public class AddGroupActivity extends AppCompatActivity implements GroupPresente
                 setDelAddList();
                 gmJoinPresenter.addArrInfo(addGroupList, mid);
                 gmJoinPresenter.delArrInfo(delGroupList, mid);
+                groupPresenter.debugLogSave();
                 forDelAdd();
                 Intent intent = new Intent(AddGroupActivity.this, StartActivity.class);
+                //intent fragment로 history지우기
                 startActivity(intent);
                 break;
         }

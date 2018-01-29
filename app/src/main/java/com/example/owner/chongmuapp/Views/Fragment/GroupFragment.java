@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.owner.chongmuapp.Model.Info.GroupInfo;
+import com.example.owner.chongmuapp.Presenter.GMJoinPresenter;
 import com.example.owner.chongmuapp.Presenter.GroupPresenter;
 import com.example.owner.chongmuapp.Presenter.InfoHandler.GroupHandler;
 import com.example.owner.chongmuapp.R;
@@ -29,8 +30,8 @@ import com.example.owner.chongmuapp.Views.Adapter.GroupAdapter;
 
 public class GroupFragment extends Fragment implements GroupPresenter.View{
     private GroupPresenter groupPresenter;
+    private GMJoinPresenter gmJoinPresenter;
     RecyclerView recyclerView;
-    GroupAdapter groupAdapter = null;
     private AlertDialog.Builder alert;
 
     public GroupFragment() {
@@ -49,6 +50,9 @@ public class GroupFragment extends Fragment implements GroupPresenter.View{
         alert  = new AlertDialog.Builder(getActivity());
         recyclerView = (RecyclerView)view.findViewById(R.id.recy_group);
         groupPresenter = new GroupPresenter(this);
+        gmJoinPresenter = new GMJoinPresenter();
+
+        gmJoinPresenter.setContext(getContext());
         groupPresenter.setContext(getContext());
 
         groupPresenter.showAll();
@@ -64,7 +68,7 @@ public class GroupFragment extends Fragment implements GroupPresenter.View{
             public void onClick(GroupInfo groupInfo, int position) {
                 Intent intent = new Intent(getActivity(), EventActivity.class);
                 intent.putExtra("gid", groupInfo.getId());
-                Toast.makeText(getActivity(), "gid: "+groupInfo.getId(),
+                Toast.makeText(getActivity(), "gid: "+groupInfo.getId() +" pin: " + groupInfo.getPin(),
                         Toast.LENGTH_LONG).show();
 
                 startActivity(intent);
@@ -80,7 +84,11 @@ public class GroupFragment extends Fragment implements GroupPresenter.View{
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //확인
+                            //필요할까?
+                            gmJoinPresenter.delByGroup(gid);
+                            /////////////////////
                             groupPresenter.confirmDel(pos, gid);
+
                         }
                     });
                     alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -90,7 +98,6 @@ public class GroupFragment extends Fragment implements GroupPresenter.View{
                         }
                     });
                     alert.show();
-
                 } else{
                     Toast.makeText(getActivity(), "pin 갯수가 0이 아님",
                             Toast.LENGTH_LONG).show();

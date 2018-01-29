@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.owner.chongmuapp.Model.Info.GroupInfo;
 import com.example.owner.chongmuapp.Model.Info.MemberInfo;
+import com.example.owner.chongmuapp.Presenter.GMJoinPresenter;
 import com.example.owner.chongmuapp.Presenter.GroupPresenter;
 import com.example.owner.chongmuapp.Presenter.MemberPresenter;
 import com.example.owner.chongmuapp.R;
@@ -30,8 +31,9 @@ import com.example.owner.chongmuapp.Views.Adapter.MemberAdapter;
 
 public class MemberFragment extends Fragment implements MemberPresenter.View{
     private MemberPresenter memberPresenter;
+    private GMJoinPresenter gmJoinPresenter;
+
     RecyclerView recyclerView;
-    MemberAdapter memberAdapter = null;
     private AlertDialog.Builder alert;
 
     public MemberFragment() {
@@ -52,6 +54,9 @@ public class MemberFragment extends Fragment implements MemberPresenter.View{
         alert  = new AlertDialog.Builder(getActivity());
         recyclerView = (RecyclerView)view.findViewById(R.id.recy_member);
         memberPresenter = new MemberPresenter(this);
+        gmJoinPresenter = new GMJoinPresenter();
+
+        gmJoinPresenter.setContext(getContext());
         memberPresenter.setContext(getContext());
 
         memberPresenter.showAll();
@@ -77,14 +82,18 @@ public class MemberFragment extends Fragment implements MemberPresenter.View{
             @Override
             public void onLongClick(MemberInfo memberInfo, int position){
                 final int pos = position;
-                final int gid = memberInfo.getId();
+                final int mid = memberInfo.getId();
                 if(memberInfo.getPin() == 0){
                     alert.setTitle("really??");
                     alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //확인
-                            memberPresenter.confirmDel(pos, gid);
+                            //필요할까??
+                            gmJoinPresenter.delByMember(mid);
+                            ///////////////////////////////////
+                            memberPresenter.confirmDel(pos, mid);
+
                         }
                     });
                     alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {

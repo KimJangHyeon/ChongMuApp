@@ -42,8 +42,18 @@ public class GMJoinPresenter {
         gmJoinDB  = new SQLiteGM(context, Constant.DB_NAME, null, 4);
         for(String gid_str: gidList){
             Log.e("delArrInfo", gid_str);
-            gmJoinDB.delete(Integer.parseInt(gid_str), mid);
+            gmJoinDB.delete(mid, Integer.parseInt(gid_str));
         }
+        gmJoinDB.close();
+    }
+    public void delByGroup(int gid){
+        gmJoinDB = new SQLiteGM(context, Constant.DB_NAME, null, 4);
+        gmJoinDB.deleteByGid(gid);
+        gmJoinDB.close();
+    }
+    public void delByMember(int mid){
+        gmJoinDB = new SQLiteGM(context, Constant.DB_NAME, null, 4);
+        gmJoinDB.deleteByMid(mid);
         gmJoinDB.close();
     }
     public ArrayList<String> getMatchingGid(int mid){
