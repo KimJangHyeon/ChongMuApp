@@ -1,17 +1,15 @@
 package com.example.owner.chongmuapp.Presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 
 import com.example.owner.chongmuapp.Common.Constant;
 import com.example.owner.chongmuapp.Model.Data.Basic.SQLiteGroup;
 import com.example.owner.chongmuapp.Model.Info.GroupInfo;
-import com.example.owner.chongmuapp.Model.Info.GroupItem;
+import com.example.owner.chongmuapp.Model.Info.AddItem;
 import com.example.owner.chongmuapp.Presenter.InfoHandler.GroupHandler;
 import com.example.owner.chongmuapp.Views.Adapter.GroupAdapter;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -47,11 +45,6 @@ public class GroupPresenter {
         }
     }
     public GroupPresenter() {}
-
-    public void setAddReyclerView(){
-        adapter = new GroupAdapter(groupHandler.getInstance().getInfoList());
-        groupHandler.getInstance().attach(adapter);
-    }
 
     private void setReyclerView(){
         adapter = new GroupAdapter(groupHandler.getInstance().getInfoList());
@@ -99,10 +92,10 @@ public class GroupPresenter {
         groupHandler.getInstance().setInitialized(true);
     }
 
-    public void setAddMode(ArrayList<String> gidList, ArrayList<GroupItem> groupList){
+    public void setAddMode(ArrayList<String> gidList, ArrayList<AddItem> groupList){
         for(int i =0;i<groupHandler.getInstance().getInfoList().size();i++){
             groupHandler.getInstance().getInfoList().get(i).setPin(0);
-            groupList.add(new GroupItem(groupHandler.getInstance().getInfoList().get(i).getId(), 0));
+            groupList.add(new AddItem(groupHandler.getInstance().getInfoList().get(i).getId(), 0));
         }
 
         for(String gidStr: gidList) {
@@ -110,6 +103,7 @@ public class GroupPresenter {
                 if(groupHandler.getInstance().getInfoList().get(i).getId() == Integer.parseInt(gidStr)) {
                     groupHandler.getInstance().getInfoList().get(i).setPin(1);
                     groupList.get(i).setIsChecked(1);
+                    break;
                 }
             }
         }

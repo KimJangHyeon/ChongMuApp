@@ -1,6 +1,5 @@
 package com.example.owner.chongmuapp.Views.Activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,27 +10,30 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.owner.chongmuapp.Common.Constant;
 import com.example.owner.chongmuapp.Model.Info.GroupInfo;
-import com.example.owner.chongmuapp.Model.Info.GroupItem;
+import com.example.owner.chongmuapp.Model.Info.AddItem;
 import com.example.owner.chongmuapp.Presenter.GMJoinPresenter;
 import com.example.owner.chongmuapp.Presenter.GroupPresenter;
+import com.example.owner.chongmuapp.Presenter.PayablesPresenter;
 import com.example.owner.chongmuapp.R;
 import com.example.owner.chongmuapp.Views.Adapter.GroupAdapter;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class AddGroupActivity extends AppCompatActivity implements GroupPresenter.View, View.OnClickListener {
     private GroupPresenter groupPresenter;
     private GMJoinPresenter gmJoinPresenter;
+    private PayablesPresenter payablesPresenter;
+
     RecyclerView recyclerView;
     GroupAdapter groupAdapter = null;
     ArrayList<String> gidList;
     TextView textApply;
     private int mid;
     private String mName;
-    ArrayList<GroupItem> oldItemList;
-    ArrayList<GroupItem> newItemList;
+    ArrayList<AddItem> oldItemList;
+    ArrayList<AddItem> newItemList;
     ArrayList<String> delGroupList;
     ArrayList<String> addGroupList;
 
@@ -44,23 +46,29 @@ public class AddGroupActivity extends AppCompatActivity implements GroupPresente
         newItemList = new ArrayList<>();
         delGroupList = new ArrayList<>();
         addGroupList = new ArrayList<>();
-
-        recyclerView = (RecyclerView)findViewById(R.id.recy_group);
-        gmJoinPresenter = new GMJoinPresenter();
-        groupPresenter = new GroupPresenter(this);
-
-        groupPresenter.setContext(getApplicationContext());
-        gmJoinPresenter.setContext(getApplicationContext());
-
         gidList = new ArrayList<>();
-        groupPresenter.flashList();
-        groupPresenter.showAll();
 
-        textApply = (TextView) findViewById(R.id.btn_apply_txt);
-        textApply.setOnClickListener(this);
+        //set Intent arr
         Intent intent = getIntent();
         mid = intent.getExtras().getInt("mid");
         mName = intent.getExtras().getString("mName");
+
+        //widget
+        recyclerView = (RecyclerView)findViewById(R.id.recy_group);
+        textApply = (TextView) findViewById(R.id.btn_apply_txt);
+        textApply.setOnClickListener(this);
+
+        //set Presenter
+        gmJoinPresenter = new GMJoinPresenter();
+        groupPresenter = new GroupPresenter(this);
+        payablesPresenter = new PayablesPresenter();
+
+        groupPresenter.setContext(getApplicationContext());
+        gmJoinPresenter.setContext(getApplicationContext());
+        payablesPresenter.setContext(getApplicationContext());
+
+        groupPresenter.flashList();
+        groupPresenter.showAll();
     }
 
     @Override
@@ -74,27 +82,26 @@ public class AddGroupActivity extends AppCompatActivity implements GroupPresente
     @Override
     public void showAdapter(GroupAdapter adapter) {
         recyclerView.setAdapter(adapter);
-        Intent intent = getIntent();
-        mid = intent.getExtras().getInt("mid");
-        mName = intent.getExtras().getString("mName");
-        Log.e("1", "1");
-        groupPresenter.debugLogSave();
+//        Intent intent = getIntent();
+//        mid = intent.getExtras().getInt("mid");
+//        mName = intent.getExtras().getString("mName");
+        Log.e("showAdapter mid", mid+"");
         groupPresenter.setAddMode(gmJoinPresenter.getMatchingGid(mid), oldItemList);
-        Log.e("2", "2");
-        groupPresenter.debugLogSave();
         adapter.setItemClick(new GroupAdapter.ItemClick(){
             @Override
             public void onClick(GroupInfo groupInfo, int position) {
-                if(groupInfo.getPin() == 1){
-                    groupPresenter.addGroupIsChecked(position, 0);
-                    groupInfo.setPin(0);
-                    gidList.remove(String.valueOf(groupInfo.getId()));
-                    Log.e("gidList  ", gidList.toString());
-                }
-                else if (groupInfo.getPin() == 0) {
-                    groupPresenter.addGroupIsChecked(position, 1);
-                    gidList.add(String.valueOf(groupInfo.getId()));
-                    Log.e("gidList  ", gidList.toString());
+                if(!payablesPresenter.isPin(groupInfo.getId(), mid)){
+                    if(groupInfo.getPin() == 1){
+                        groupPresenter.addGroupIsChecked(position, 0);
+                        groupInfo.setPin(0);
+                        gidList.remove(String.valueOf(groupInfo.getId()));
+                    }
+                    else if (groupInfo.getPin() == 0) {
+                        groupPresenter.addGroupIsChecked(position, 1);
+                        gidList.add(String.valueOf(groupInfo.getId()));
+                    }
+                } else{
+                    Toast.makeText(AddGroupActivity.this, Constant.MEM_PINED, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -111,12 +118,14 @@ public class AddGroupActivity extends AppCompatActivity implements GroupPresente
             case R.id.btn_apply_txt:
                 setNewItemList(groupPresenter.getItemList());
                 setDelAddList();
-                gmJoinPresenter.addArrInfo(addGroupList, mid);
-                gmJoinPresenter.delArrInfo(delGroupList, mid);
+                gmJoinPresenter.addArrInfo(addGroupList, mid, true);
+                gmJoinPresenter.delArrInfo(delGroupList, mid, true);
                 groupPresenter.debugLogSave();
                 forDelAdd();
                 Intent intent = new Intent(AddGroupActivity.this, StartActivity.class);
                 //intent fragment로 history지우기
+                intent.addFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 break;
         }
@@ -156,7 +165,7 @@ public class AddGroupActivity extends AppCompatActivity implements GroupPresente
 
     public void setNewItemList(ArrayList<GroupInfo> groupList){
         for(GroupInfo groupInfo: groupList){
-            newItemList.add(new GroupItem(groupInfo.getId(), groupInfo.getPin()));
+            newItemList.add(new AddItem(groupInfo.getId(), groupInfo.getPin()));
         }
     }
 }

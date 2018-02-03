@@ -23,4 +23,5 @@ public class MemberInfo {
     public int getPin(){
         return this.pin;
     }
+    public void setPin(int pin) {this.pin = pin; }
 }

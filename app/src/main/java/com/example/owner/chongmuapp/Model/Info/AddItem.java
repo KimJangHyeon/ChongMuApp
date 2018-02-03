@@ -4,18 +4,18 @@ package com.example.owner.chongmuapp.Model.Info;
  * Created by Owner on 2018-01-28.
  */
 
-public class GroupItem {
-    int gid;
+public class AddItem {
+    int id;
     int isChecked;
 
-    public GroupItem(int gid, int isChecked){
-        this.gid = gid;
+    public AddItem(int id, int isChecked){
+        this.id = id;
         this.isChecked = isChecked;
     }
 
-    public int getGid(){ return gid; }
+    public int getGid(){ return id; }
     public int getIsChecked() {return isChecked; }
-    public void setGid(int gid) {this.gid = gid; }
+    public void setGid(int gid) {this.id = gid; }
     public void setIsChecked(int isChecked) { this.isChecked = isChecked; }
 
 }

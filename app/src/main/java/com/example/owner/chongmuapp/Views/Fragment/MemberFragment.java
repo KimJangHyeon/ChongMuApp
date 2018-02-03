@@ -73,7 +73,7 @@ public class MemberFragment extends Fragment implements MemberPresenter.View{
                 Intent intent = new Intent(getActivity(), AddGroupActivity.class);
                 intent.putExtra("mid", memberInfo.getId());
                 intent.putExtra("mName", memberInfo.getName());
-                Toast.makeText(getActivity(), "mid: "+memberInfo.getId(),
+                Toast.makeText(getActivity(), "mid: "+memberInfo.getId()+" pin: "+memberInfo.getPin(),
                         Toast.LENGTH_LONG).show();
 
                 startActivity(intent);

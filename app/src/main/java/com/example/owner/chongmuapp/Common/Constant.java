@@ -11,10 +11,16 @@ public class Constant {
 
 
     //DB name
-    public static final String DB_NAME = "TEST2.db";
+    public static final String DB_NAME = "TEST3.db";
     public static final String GM_JOIN_TABLE = "TGMJOIN";
     public static final String GROUP_TABLE = "TGROUP";
     public static final String MEMBER_TABLE = "TMEMBER";
     public static final String EVENT_TABLE = "TEVENT";
     public static final String PAY_TABLE = "TPAYABLES";
+
+    //Toast메시지
+    public static final String EVENT_NAME_EMPTY = "이벤트에게 이름을 지어줘~!!";
+    public static final String EVENT_PAY_EMPTY = "얼마 썼어?";
+    public static final String EVENT_MEMBER_NULL = "멤버를 지정해줘!!";
+    public static final String MEM_PINED = "해당 그룹에 이벤트가 남아 있음!";
 }

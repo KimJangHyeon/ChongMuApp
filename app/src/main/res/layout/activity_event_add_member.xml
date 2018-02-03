@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.owner.chongmuapp.Views.Activity.AddGroupActivity">
+    tools:context="com.example.owner.chongmuapp.Views.Activity.EventAddMemberActivity">
+
     <RelativeLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="0dp"
@@ -40,58 +41,60 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"
+        android:layout_marginTop="0dp">
+
+        <EditText
+            android:id="@+id/event_etxt"
+            android:layout_width="137dp"
+            android:layout_height="39dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Event"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/member_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/btn_apply_txt"
+            android:layout_width="79dp"
+            android:layout_height="41dp"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:text="GROUP"
-            android:textSize="24sp"
+            android:padding="6sp"
+            android:text="추가"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.097"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/llayout_add"
-            android:layout_marginRight="8dp"
-            app:layout_constraintVertical_bias="0.526"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp" />
-
-        <LinearLayout
-            android:id="@+id/llayout_add"
-            android:layout_width="118dp"
-            android:layout_height="33dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="8dp"
-            android:orientation="horizontal"
-            android:weightSum="1"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.758"
+            app:layout_constraintLeft_toRightOf="@+id/payables_etxt"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
+            tools:layout_editor_absoluteX="298dp" />
 
-            <TextView
-                android:id="@+id/btn_apply_txt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="6sp"
-                android:text="추가"
-                android:textSize="18sp" />
-        </LinearLayout>
+        <EditText
+            android:id="@+id/pay_etxt"
+            android:layout_width="112dp"
+            android:layout_height="39dp"
+            android:layout_marginLeft="15dp"
+            android:ems="10"
+            android:hint="pay"
+            android:inputType="number"
+            app:layout_constraintLeft_toRightOf="@+id/event_etxt"
+            tools:layout_editor_absoluteY="4dp" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recy_group"
+        android:id="@+id/recy_member"
         android:layout_width="0dp"
         android:layout_height="480dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout_search_group"
         app:layout_constraintVertical_bias="0.0" />
+
 </android.support.constraint.ConstraintLayout>

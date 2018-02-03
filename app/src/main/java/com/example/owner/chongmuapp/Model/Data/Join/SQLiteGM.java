@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.owner.chongmuapp.Common.Constant;
+import com.example.owner.chongmuapp.Model.Info.MemberInfo;
 
 import java.util.ArrayList;
 
@@ -34,22 +35,22 @@ public class SQLiteGM extends SQLiteOpenHelper {
 
         //event table
         db.execSQL("CREATE TABLE if not exists " + Constant.EVENT_TABLE
-                + " (gid INTEGER, eid INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, datetime DATETIME DEFAULT CURRENT_TIMESTAMP, left INTEGER)"
+                + " (gid INTEGER, eid INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, pay INTEGER, datetime DATETIME DEFAULT CURRENT_TIMESTAMP, left INTEGER)"
         );
 
         //group & member table
         db.execSQL("CREATE TABLE if not exists " + Constant.GM_JOIN_TABLE
-                + " (gid INTEGER NOT NULL, mid INTEGER NOT NULL, PRIMARY KEY (gid, mid) " +
+                + " (gid INTEGER NOT NULL, mid INTEGER NOT NULL, " +
                 "FOREIGN KEY (gid) REFERENCES " + Constant.GROUP_TABLE
                 +" (gid), "+
                 "FOREIGN KEY (mid) REFERENCES " + Constant.MEMBER_TABLE
-                +" (mid) );"
+                +" (mid)) "
         );
 
         //payables table
         db.execSQL("CREATE TABLE if not exists " + Constant.PAY_TABLE
-                + " (gid INTEGER, eid INTEGER, mid INTEGER, pay INTEGER, payables BOOLEAN) "
-                + "FOREIGN KEY (mid) REFERENCES " + Constant.MEMBER_TABLE + " (mid) );"
+                + " (gid INTEGER, eid INTEGER, mid INTEGER, pay INTEGER, payables BOOLEAN, "
+                + "FOREIGN KEY (mid) REFERENCES " + Constant.MEMBER_TABLE + " (mid)) "
         );
     }
 
@@ -82,6 +83,26 @@ public class SQLiteGM extends SQLiteOpenHelper {
             if(cursor.moveToFirst()) {
                 do {
                     matchingGid.add(String.valueOf(cursor.getInt(0)));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            return;
+        }catch(Exception e){
+            Log.e("GM return ", "false");
+            Log.e("GM Error", e+"");
+            return;
+        }
+    }
+
+    public void getGroupJoin(int gid, ArrayList<MemberInfo> result){
+        try{
+            Cursor cursor = this.getReadableDatabase().rawQuery("SELECT "+Constant.MEMBER_TABLE+".mid, " +Constant.MEMBER_TABLE+".name, "+Constant.MEMBER_TABLE+".pin "
+                    + "FROM "+Constant.MEMBER_TABLE+" JOIN "+Constant.GM_JOIN_TABLE
+                    +" ON "+ Constant.MEMBER_TABLE+".mid = "+Constant.GM_JOIN_TABLE+".mid"
+                    +" WHERE "+Constant.GM_JOIN_TABLE+".gid = "+gid, null);
+            if(cursor.moveToFirst()) {
+                do {
+                    result.add(new MemberInfo(cursor.getInt(0), cursor.getString(1), 0));
                 } while (cursor.moveToNext());
             }
             cursor.close();

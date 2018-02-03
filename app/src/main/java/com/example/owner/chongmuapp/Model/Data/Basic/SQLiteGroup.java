@@ -35,7 +35,7 @@ public class SQLiteGroup extends SQLiteOpenHelper{
 
         //event table
         db.execSQL("CREATE TABLE if not exists " + Constant.EVENT_TABLE
-                + " (gid INTEGER, eid INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, datetime DATETIME DEFAULT CURRENT_TIMESTAMP, left INTEGER)"
+                + " (gid INTEGER, eid INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, pay INTEGER, datetime DATETIME DEFAULT CURRENT_TIMESTAMP, left INTEGER)"
         );
 
         //group & member table
@@ -65,6 +65,12 @@ public class SQLiteGroup extends SQLiteOpenHelper{
         values.put("name", group);
         values.put("pin", 0);
         this.getWritableDatabase().insert(Constant.GROUP_TABLE, null, values);
+    }
+
+    public void update(int gid, int pin){
+        ContentValues values = new ContentValues();
+        values.put("pin", pin);
+        this.getWritableDatabase().update(Constant.GROUP_TABLE, values, "gid=?", new String[] { String.valueOf(gid)});
     }
 
     public void delete (int gid) {

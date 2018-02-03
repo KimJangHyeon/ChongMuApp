@@ -68,6 +68,7 @@ public class GroupFragment extends Fragment implements GroupPresenter.View{
             public void onClick(GroupInfo groupInfo, int position) {
                 Intent intent = new Intent(getActivity(), EventActivity.class);
                 intent.putExtra("gid", groupInfo.getId());
+                intent.putExtra("gName", groupInfo.getName());
                 Toast.makeText(getActivity(), "gid: "+groupInfo.getId() +" pin: " + groupInfo.getPin(),
                         Toast.LENGTH_LONG).show();
 

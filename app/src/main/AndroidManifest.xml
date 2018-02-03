@@ -21,7 +21,9 @@
         </activity>
         <activity android:name=".Views.Activity.EventActivity" />
         <activity android:name=".Views.Activity.AddMemberActivity" />
-        <activity android:name=".Views.Activity.AddGroupActivity"></activity>
+        <activity android:name=".Views.Activity.AddGroupActivity" />
+        <activity android:name=".Views.Activity.EventAddMemberActivity" />
+        <activity android:name=".Views.Activity.PayablesActivity"></activity>
     </application>
 
 </manifest>

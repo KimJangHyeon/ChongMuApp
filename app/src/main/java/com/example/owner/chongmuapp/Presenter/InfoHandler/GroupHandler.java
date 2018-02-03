@@ -49,7 +49,6 @@ public class GroupHandler extends Subject{
 
     public boolean isChecked(int pos, int isChecked){
         groupInfoList.get(pos).setPin(isChecked);
-        Log.e("GH isChecked gil pin", groupInfoList.get(pos).getPin()+"");
         notifyObservers();
         return true;
     }

@@ -9,9 +9,12 @@ import android.util.Log;
 
 import com.example.owner.chongmuapp.Common.Constant;
 import com.example.owner.chongmuapp.Model.Info.GroupInfo;
+import com.example.owner.chongmuapp.Model.Info.IdPin;
 import com.example.owner.chongmuapp.Model.Info.MemberInfo;
 import com.example.owner.chongmuapp.Presenter.InfoHandler.GroupHandler;
 import com.example.owner.chongmuapp.Presenter.InfoHandler.MemberHandler;
+
+import java.util.ArrayList;
 
 /**
  * Created by Owner on 2018-01-23.
@@ -36,22 +39,22 @@ public class SQLiteMember extends SQLiteOpenHelper {
 
         //event table
         db.execSQL("CREATE TABLE if not exists " + Constant.EVENT_TABLE
-                + " (gid INTEGER, eid INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, datetime DATETIME DEFAULT CURRENT_TIMESTAMP, left INTEGER)"
+                + " (gid INTEGER, eid INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, pay INTEGER, datetime DATETIME DEFAULT CURRENT_TIMESTAMP, left INTEGER)"
         );
 
         //group & member table
         db.execSQL("CREATE TABLE if not exists " + Constant.GM_JOIN_TABLE
-                + " (gid INTEGER NOT NULL, mid INTEGER NOT NULL, PRIMARY KEY (gid, mid) " +
+                + " (gid INTEGER NOT NULL, mid INTEGER NOT NULL, " +
                 "FOREIGN KEY (gid) REFERENCES " + Constant.GROUP_TABLE
                 +" (gid), "+
                 "FOREIGN KEY (mid) REFERENCES " + Constant.MEMBER_TABLE
-                +" (mid) );"
+                +" (mid)) "
         );
 
         //payables table
         db.execSQL("CREATE TABLE if not exists " + Constant.PAY_TABLE
-                + " (gid INTEGER, eid INTEGER, mid INTEGER, pay INTEGER, payables BOOLEAN) "
-                + "FOREIGN KEY (mid) REFERENCES " + Constant.MEMBER_TABLE + " (mid) );"
+                + " (gid INTEGER, eid INTEGER, mid INTEGER, pay INTEGER, payables BOOLEAN, "
+                + "FOREIGN KEY (mid) REFERENCES " + Constant.MEMBER_TABLE + " (mid)) "
         );
     }
 
@@ -66,6 +69,13 @@ public class SQLiteMember extends SQLiteOpenHelper {
         values.put("pin", 0);
         this.getWritableDatabase().insert(Constant.MEMBER_TABLE, null, values);
     }
+
+    public void update(int mid, int pin){
+        ContentValues values = new ContentValues();
+        values.put("pin", pin);
+        this.getWritableDatabase().update(Constant.MEMBER_TABLE, values, "mid=?", new String[] { String.valueOf(mid)});
+    }
+
 
     public void delete (int mid) {
         String[] midArgs = {String.valueOf(mid)};
@@ -99,6 +109,14 @@ public class SQLiteMember extends SQLiteOpenHelper {
         }catch(Exception e){
             Log.e("return ", "false");
             return false;
+        }
+    }
+
+    public void setMemPin(ArrayList<IdPin> idPinList, int increase){
+        ContentValues values = new ContentValues();
+        for(IdPin idPin: idPinList){
+            values.put("pin", idPin.getPin()+ increase);
+            this.getWritableDatabase().update(Constant.MEMBER_TABLE, values, "mid=?", new String[] { String.valueOf(idPin.getId()) });
         }
     }
 }

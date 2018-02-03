@@ -5,12 +5,10 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.owner.chongmuapp.Common.Constant;
-import com.example.owner.chongmuapp.Model.Data.Basic.SQLiteGroup;
 import com.example.owner.chongmuapp.Model.Data.Basic.SQLiteMember;
-import com.example.owner.chongmuapp.Model.Info.GroupInfo;
+import com.example.owner.chongmuapp.Model.Info.AddItem;
 import com.example.owner.chongmuapp.Model.Info.MemberInfo;
 import com.example.owner.chongmuapp.Presenter.InfoHandler.MemberHandler;
-import com.example.owner.chongmuapp.Views.Adapter.GroupAdapter;
 import com.example.owner.chongmuapp.Views.Adapter.MemberAdapter;
 
 import java.util.ArrayList;
@@ -43,7 +41,6 @@ public class MemberPresenter {
     public MemberPresenter(View view) {
         this.view = view;
         memberHandler = new MemberHandler().getInstance();
-
         setReyclerView();
 
         if (memberHandler.isInitialized() == false) {
@@ -55,6 +52,7 @@ public class MemberPresenter {
 
     private void setReyclerView(){
         adapter = new MemberAdapter(memberHandler.getInstance().getInfoList());
+        Log.e("MemberPresenter", "set adapter");
         memberHandler.getInstance().attach(adapter);
     }
 
@@ -70,9 +68,9 @@ public class MemberPresenter {
     }
     public ArrayList<MemberInfo> getItemList() { return memberHandler.getInstance().getInfoList(); }
 
-    /* Logic */
+        /* Logic */
 
-    /* Fragment Method */
+        /* Fragment Method */
     public void showAll() {
         view.showAdapter(adapter);
     }
@@ -90,7 +88,6 @@ public class MemberPresenter {
         MemberInfo memberInfo;
         SQLiteMember DB = new SQLiteMember(context, Constant.DB_NAME, null, 4);
         DB.insert(memberName);
-        Log.e("DB.getInfo", DB.getInfo(memberName)+"");
         memberInfo = DB.getInfo(memberName);
         memberHandler.getInstance().addInfo(memberInfo);
         DB.close();
@@ -103,6 +100,46 @@ public class MemberPresenter {
         memberTable.close();
 
         memberHandler.getInstance().setInitialized(true);
+    }
 
+    /*Activity method*/
+    public void setAddMode(ArrayList<String> gidList, ArrayList<AddItem> memberList){
+        for(int i =0;i<memberHandler.getInstance().getInfoList().size();i++){
+            memberHandler.getInstance().getInfoList().get(i).setPin(0);
+            memberList.add(new AddItem(memberHandler.getInstance().getInfoList().get(i).getId(), 0));
+        }
+
+        for(String gidStr: gidList) {
+            for (int i = 0; i < memberHandler.getInstance().getInfoList().size(); i++) {
+                if(memberHandler.getInstance().getInfoList().get(i).getId() == Integer.parseInt(gidStr)) {
+                    memberHandler.getInstance().getInfoList().get(i).setPin(1);
+                    memberList.get(i).setIsChecked(1);
+                    break;
+                }
+            }
+        }
+        memberHandler.getInstance().notifyObservers();
+    }
+    public boolean addMemberIsChecked(int pos, int isCheck){
+        memberHandler.getInstance().isChecked(pos, isCheck);
+        return true;
+    }
+
+    public void flashList(){
+        memberHandler.getInstance().flashInfoList();
+    }
+    public void loadList(){
+        memberHandler.getInstance().loadInfoList();
+    }
+
+    public void setAddGroupJoin(ArrayList<MemberInfo> memberList){
+        memberHandler.getInstance().refresh();
+        memberHandler.getInstance().addArrInfo(memberList);
+    }
+
+    public void setPin(int mid, int pin){
+        SQLiteMember memDB = new SQLiteMember(context, Constant.DB_NAME, null, 4);
+        memDB.update(mid, pin);
+        memDB.close();
     }
 }

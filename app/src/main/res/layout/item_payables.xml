@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.05"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name_txt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.05"
+            android:gravity="center"
+            android:shadowColor="#FFFFFF"
+            android:text="TextView"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/payables_etxt"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+
+            android:layout_weight="0.05"
+            android:ems="10"
+            android:gravity="center"
+
+            android:inputType="number"
+            android:shadowColor="#FFFFFF"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

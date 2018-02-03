@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.owner.chongmuapp.Common.Constant;
 import com.example.owner.chongmuapp.Model.Data.Join.SQLiteGM;
+import com.example.owner.chongmuapp.Model.Info.MemberInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,19 +31,33 @@ public class GMJoinPresenter {
         gmJoinDB.insert(gid, mid);
         gmJoinDB.close();
     }
-    public void addArrInfo(ArrayList<String> gidList, int mid){
-        gmJoinDB  = new SQLiteGM(context, Constant.DB_NAME, null, 4);
-        for(String gid_str: gidList){
-            Log.e("addArrInfo", gid_str);
-            gmJoinDB.insert(Integer.parseInt(gid_str), mid);
+    public void addArrInfo(ArrayList<String> idList, int id, boolean isGroup){
+        gmJoinDB = new SQLiteGM(context, Constant.DB_NAME, null, 4);
+        if(isGroup) {
+            for (String gid_str : idList) {
+                Log.e("Group addArrInfo", gid_str);
+                gmJoinDB.insert(Integer.parseInt(gid_str), id);
+            }
+        }else{
+            for (String mid_str : idList) {
+                Log.e("Member addArrInfo", mid_str);
+                gmJoinDB.insert(id, Integer.parseInt(mid_str));
+            }
         }
         gmJoinDB.close();
     }
-    public void delArrInfo(ArrayList<String> gidList, int mid){
-        gmJoinDB  = new SQLiteGM(context, Constant.DB_NAME, null, 4);
-        for(String gid_str: gidList){
-            Log.e("delArrInfo", gid_str);
-            gmJoinDB.delete(mid, Integer.parseInt(gid_str));
+    public void delArrInfo(ArrayList<String> idList, int id, boolean isGroup){
+        gmJoinDB = new SQLiteGM(context, Constant.DB_NAME, null, 4);
+        if(isGroup) {
+            for (String gid_str : idList) {
+                Log.e("delArrInfo", gid_str);
+                gmJoinDB.delete(id, Integer.parseInt(gid_str));
+            }
+        } else{
+            for (String mid_str : idList) {
+                Log.e("delArrInfo", mid_str);
+                gmJoinDB.delete(Integer.parseInt(mid_str), id);
+            }
         }
         gmJoinDB.close();
     }
@@ -60,8 +75,17 @@ public class GMJoinPresenter {
         matchingGid = new ArrayList<>();
         gmJoinDB  = new SQLiteGM(context, Constant.DB_NAME, null, 4);
         gmJoinDB.getMatchingGroup(mid, matchingGid);
+        gmJoinDB.close();
         Log.e("matchingGid", matchingGid+"");
         return matchingGid;
+    }
+
+    public ArrayList<MemberInfo> getGroupJoin(int gid){
+        ArrayList<MemberInfo> result = new ArrayList<>();
+        gmJoinDB  = new SQLiteGM(context, Constant.DB_NAME, null, 4);
+        gmJoinDB.getGroupJoin(gid, result);
+        gmJoinDB.close();
+        return result;
     }
 
 }

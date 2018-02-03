@@ -43,6 +43,7 @@ public class StartActivity extends AppCompatActivity implements DataPresenter.Vi
     Button btn_member;
     LinearLayout llayout_adressbook_btn;
     final int vp_num = 2;
+    Long backKeyPressedTime = 0L;
     int selected_page = 0;
 
     private CustomDialog1 groupDialog1;
@@ -129,6 +130,18 @@ public class StartActivity extends AppCompatActivity implements DataPresenter.Vi
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            Toast.makeText(StartActivity.this, "\'뒤로\'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            return;
+        } if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            finish();
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
