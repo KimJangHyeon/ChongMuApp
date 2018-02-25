@@ -11,6 +11,7 @@ import android.util.EventLog;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.owner.chongmuapp.Debug;
 import com.example.owner.chongmuapp.Model.Info.LogInfo;
@@ -42,7 +43,7 @@ public class PayablesActivity extends AppCompatActivity implements PayablesPrese
     /*is not fix*/
     ArrayList<String> midList;
     ArrayList<String> nameList;
-
+    int ePay;
     //interface
 
     //logic
@@ -80,6 +81,19 @@ public class PayablesActivity extends AppCompatActivity implements PayablesPrese
         }
     }
 
+
+    protected void onPause(){
+        super.onPause();
+        Log.e("onPause", "실행");
+
+        Toast.makeText(PayablesActivity.this, " too", Toast.LENGTH_SHORT);
+    }
+    protected  void onDestroy(){
+        super.onDestroy();
+        Log.e("onDestroy", "실행");
+        Toast.makeText(PayablesActivity.this, " to", Toast.LENGTH_SHORT);
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -105,18 +119,19 @@ public class PayablesActivity extends AppCompatActivity implements PayablesPrese
      public void setIntent(){
          Intent intent = getIntent();
          gid = intent.getExtras().getInt("gid");
-         eid = intent.getExtras().getInt("eid");
+         eName =  intent.getExtras().getString("eName");
          isFixed = intent.getExtras().getBoolean("isFixed");
+         count = intent.getExtras().getInt("count");
          if(!isFixed) {
              midList = (ArrayList<String>) getIntent().getSerializableExtra("midList");
              nameList = (ArrayList<String>) getIntent().getSerializableExtra("nameList");
              payables = intent.getExtras().getInt("payables");
+             ePay = intent.getExtras().getInt("ePay");
              //payAvg = payables/nameList.size();
              leftMember = nameList.size();
          } else{
-             count = intent.getExtras().getInt("count");
-             eName =  intent.getExtras().getString("eName");
              gName = intent.getExtras().getString("gName");
+             eid = intent.getExtras().getInt("eid");
          }
 
      }
@@ -220,8 +235,10 @@ public class PayablesActivity extends AppCompatActivity implements PayablesPrese
         switch (view.getId()){
             case R.id.btn_apply_txt:
                 if(!isFixed) {
+                    eid = eventPresenter.confirmAdd(eName, ePay, gid, count);
                     payablesPresenter.flushAdapter(gid, eid);
                     payablesPresenter.setmemIdPin(gid, eid, 1);
+                    payablesPresenter.setgroupIdPin(gid, 1);
                 }
                 else
                     eventPresenter.setCount(eid, count, increase);

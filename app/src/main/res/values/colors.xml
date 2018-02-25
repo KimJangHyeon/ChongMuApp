@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#263238</color>
     <color name="colorAccent">#FF4081</color>
     <!-- 배경 색상 값 -->
     <color name="backGroundColorBasic">#FFFFFF</color>
     <color name="backGroundColorGray"> #EDEDED</color>
+    <color name="titleBarColorDarkBlue">#8C9EFF</color>
 
     <!-- 기본 색상 -->
     <color name="orangeLight">#FFF1D6</color>

@@ -4,12 +4,14 @@
         <shape android:shape="rectangle">
             <padding
                 android:bottom="2dp"/>
-            <solid android:color="#8C8C8C" />
+            <!--<solid android:color="#8C8C8C" />-->
+            <solid android:color="#4FC3F7" />
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle" >
-            <solid android:color="#EAEAEA" />
+            <!--<solid android:color="#EAEAEA" />-->
+            <solid android:color="#B3E5FC" />
         </shape>
     </item>
 </layer-list>

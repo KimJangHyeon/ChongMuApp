@@ -108,7 +108,7 @@ public class EventActivity extends AppCompatActivity implements EventPresenter.V
                             //확인
 
                             payablesPresenter.setmemIdPin(gid, eid, -1);
-
+                            payablesPresenter.setgroupIdPin(gid, -1);
                             eventPresenter.confirmDel(pos, eid);
                             payablesPresenter.eventDel(eid);
                         }

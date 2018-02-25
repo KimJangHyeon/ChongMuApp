@@ -100,15 +100,7 @@ public class EventPresenter {
         ///////////////
         DB.insert(gid, eventName, pay, getTime, count);
         eventInfo = DB.getInfo(gid, eventName, getTime);
-        Log.e("EventINFO", eventInfo+"");
-        Log.e("EVNETINFO.name", eventInfo.getName());
-        Log.e("EVENTINFO.eid", eventInfo.getId()+"");
-        Log.e("EVENTINFO.date", eventInfo.getDate());
-        Log.e("EVENTINFO.pay", eventInfo.getPay()+"");
         eventHandler.getInstance().addInfo(eventInfo);
-        for(EventInfo e: eventHandler.getInstance().getInfoList()) {
-            Log.e("handler", e.getName()+e.getDate());
-        }
         DB.close();
         return eventInfo.getId();
     }

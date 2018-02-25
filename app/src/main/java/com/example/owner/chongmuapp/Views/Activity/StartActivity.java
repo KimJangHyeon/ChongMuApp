@@ -62,8 +62,8 @@ public class StartActivity extends AppCompatActivity implements DataPresenter.Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         //fragment init
@@ -102,6 +102,7 @@ public class StartActivity extends AppCompatActivity implements DataPresenter.Vi
 
         btn_group.setTag(0);
         btn_member.setTag(1);
+        btn_group.setSelected(true);
 
         vp_start.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

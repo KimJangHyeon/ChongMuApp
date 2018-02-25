@@ -91,6 +91,8 @@ public class SQLiteGroup extends SQLiteOpenHelper{
             return null;
         }
     }
+
+
     public boolean getInfoAll(GroupHandler groupHandler){
         try{
             Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM " + Constant.GROUP_TABLE +" ORDER BY name", null);
@@ -104,6 +106,26 @@ public class SQLiteGroup extends SQLiteOpenHelper{
         }catch(Exception e){
             Log.e("return ", "false");
             return false;
+        }
+    }
+
+    public void setGroupPin(int gid, int oldPin, int increase){
+        ContentValues values = new ContentValues();
+        values.put("pin", oldPin + increase);
+        this.getWritableDatabase().update(Constant.GROUP_TABLE, values, "gid=?", new String[] { String.valueOf(gid) });
+
+    }
+    public int getPin(int gid){
+        try {
+            int result;
+            Cursor cursor = this.getReadableDatabase().rawQuery("SELECT pin FROM " + Constant.GROUP_TABLE + " WHERE gid = '" + gid + "'", null);
+            cursor.moveToFirst();
+            result = cursor.getInt(0);
+            cursor.close();
+            return result;
+        } catch(Exception e){
+            Log.e("error catch", e+"");
+            return -1;
         }
     }
 }

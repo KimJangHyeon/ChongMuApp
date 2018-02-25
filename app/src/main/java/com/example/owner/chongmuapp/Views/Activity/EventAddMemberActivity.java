@@ -142,11 +142,13 @@ public class EventAddMemberActivity extends AppCompatActivity implements MemberP
     }
 
     void intentPayablesActivity(boolean isFixed){
-        eid = eventPresenter.confirmAdd(event_etxt.getText().toString(), Integer.parseInt(pay_etxt.getText().toString()), gid, count);
+        //eid = eventPresenter.confirmAdd(event_etxt.getText().toString(), Integer.parseInt(pay_etxt.getText().toString()), gid, count);
 
         Intent intent = new Intent(EventAddMemberActivity.this, PayablesActivity.class);
         intent.putExtra("gid", gid);
-        intent.putExtra("eid", eid);
+        intent.putExtra("eName", event_etxt.getText().toString());
+        intent.putExtra("ePay", Integer.parseInt(pay_etxt.getText().toString()));
+        intent.putExtra("count", count);
         intent.putExtra("isFixed", isFixed);
         intent.putExtra("midList", midList);
         intent.putExtra("nameList", nameList);

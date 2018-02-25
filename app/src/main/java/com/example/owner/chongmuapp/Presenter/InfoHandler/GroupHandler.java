@@ -76,4 +76,13 @@ public class GroupHandler extends Subject{
         }
     }
 
+    public void setPin(int gid, int increase){
+        for(GroupInfo groupInfo: groupInfoList){
+            if(groupInfo.getId() == gid) {
+                groupInfo.setPin(groupInfo.getPin()+increase);
+                break;
+            }
+        }
+        notifyObservers();
+    }
 }

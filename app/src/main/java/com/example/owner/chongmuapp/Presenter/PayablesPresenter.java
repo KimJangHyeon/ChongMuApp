@@ -6,10 +6,12 @@ import android.util.Log;
 
 import com.example.owner.chongmuapp.Common.Constant;
 import com.example.owner.chongmuapp.Debug;
+import com.example.owner.chongmuapp.Model.Data.Basic.SQLiteGroup;
 import com.example.owner.chongmuapp.Model.Data.Basic.SQLiteMember;
 import com.example.owner.chongmuapp.Model.Data.Join.SQLiteLog;
 import com.example.owner.chongmuapp.Model.Info.IdPin;
 import com.example.owner.chongmuapp.Model.Info.LogInfo;
+import com.example.owner.chongmuapp.Presenter.InfoHandler.GroupHandler;
 import com.example.owner.chongmuapp.Presenter.InfoHandler.LogHandler;
 import com.example.owner.chongmuapp.Presenter.InfoHandler.MemberHandler;
 import com.example.owner.chongmuapp.Views.Adapter.PayablesAdapter;
@@ -31,7 +33,7 @@ public class PayablesPresenter {
 
     private LogHandler logHandler;
     private MemberHandler memberHandler;
-
+    private GroupHandler groupHandler;
     Debug debug;
 
     //logic
@@ -52,6 +54,7 @@ public class PayablesPresenter {
         this.view = view;
         logHandler = new LogHandler().getInstance();
         memberHandler = new MemberHandler().getInstance();
+        groupHandler = new GroupHandler().getInstance();
         setReyclerView(true);
 
         if (logHandler.isInitialized() == false) {
@@ -65,7 +68,7 @@ public class PayablesPresenter {
         this.view = view;
         logHandler = new LogHandler().getInstance();
         memberHandler = new MemberHandler().getInstance();
-
+        groupHandler = new GroupHandler().getInstance();
         setReyclerView(false);
 
         selectedPay = new ArrayList<>();
@@ -79,6 +82,7 @@ public class PayablesPresenter {
     }
 
     public PayablesPresenter() {
+        groupHandler = new GroupHandler().getInstance();
         memberHandler = new MemberHandler().getInstance();
     }
 
@@ -193,6 +197,13 @@ public class PayablesPresenter {
         Log.e("idPinList", idPinList.size()+"");
         memDB.setMemPin(idPinList, increase);
         memberHandler.setPin(idPinList, increase);
+    }
+    public void setgroupIdPin(int gid, int increase){
+        int oldPin;
+        SQLiteGroup groupDB = new SQLiteGroup(context, Constant.DB_NAME, null, 4);
+        oldPin = groupDB.getPin(gid);
+        groupDB.setGroupPin(gid, oldPin, increase);
+        groupHandler.setPin(gid, increase);
     }
 
 
